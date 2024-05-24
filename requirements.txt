@@ -10,3 +10,4 @@ tqdm
 transformers
 filetype
 opencv-python-headless
+huggingface_hub

@@ -10,3 +10,4 @@ ftfy
 tqdm
 transformers
 filetype
+libGL

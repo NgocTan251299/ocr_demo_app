@@ -10,4 +10,5 @@ ftfy
 tqdm
 transformers
 filetype
-libGL
+opencv-python-headless
+# libGL

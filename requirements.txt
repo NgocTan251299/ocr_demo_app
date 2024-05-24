@@ -1,0 +1,12 @@
+pypdfium2
+streamlit
+Pillow
+opencv-python
+torch
+python-dotenv
+pydantic
+pydantic-settings
+ftfy
+tqdm
+transformers
+filetype

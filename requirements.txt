@@ -1,7 +1,6 @@
 pypdfium2
 streamlit
 Pillow
-opencv-python
 torch
 python-dotenv
 pydantic
@@ -11,4 +10,3 @@ tqdm
 transformers
 filetype
 opencv-python-headless
-# libGL

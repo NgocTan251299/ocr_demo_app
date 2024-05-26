@@ -22,13 +22,13 @@ from surya.input.langs import replace_lang_with_code
 from surya.schema import OCRResult, TextDetectionResult, LayoutResult, OrderResult
 from surya.settings import settings
 
-parser = argparse.ArgumentParser(description="Run OCR on an image or PDF.")
-parser.add_argument("--math", action="store_true", help="Use math model for detection", default=False)
+parser = argparse.ArgumentParser(description="Chạy OCR trên hình ảnh hoặc PDF.")
+parser.add_argument("--math", action="store_true", help="Sử dụng mô hình toán học để phát hiện", default=False)
 
 try:
     args = parser.parse_args()
 except SystemExit as e:
-    print(f"Error parsing arguments: {e}")
+    print(f"Lỗi phân tích cú pháp đối số: {e}")
     os._exit(e.code)
 
 @st.cache_resource()
@@ -121,10 +121,10 @@ layout_model, layout_processor = load_layout_cached()
 order_model, order_processor = load_order_cached()
 
 
-st.markdown("""# Surya OCR Demo""")
+st.markdown("""# Surya OCR""")
 
-in_file = st.sidebar.file_uploader("PDF file or image:", type=["pdf", "png", "jpg", "jpeg", "gif", "webp"])
-languages = st.sidebar.multiselect("Languages", sorted(list(CODE_TO_LANGUAGE.values())), default=["Vietnamese"], max_selections=4)
+in_file = st.sidebar.file_uploader("PDF hoặc hình ảnh:", type=["pdf", "png", "jpg", "jpeg", "gif", "webp"])
+languages = st.sidebar.multiselect("Ngôn ngữ", sorted(list(CODE_TO_LANGUAGE.values())), default=["Vietnamese"], max_selections=4)
 
 if in_file is None:
     st.stop()
@@ -133,16 +133,16 @@ filetype = in_file.type
 whole_image = False
 if "pdf" in filetype:
     page_count = page_count(in_file)
-    page_number = st.sidebar.number_input(f"Page number out of {page_count}:", min_value=1, value=1, max_value=page_count)
+    page_number = st.sidebar.number_input(f"Số trang {page_count}:", min_value=1, value=1, max_value=page_count)
 
     pil_image = get_page_image(in_file, page_number)
 else:
     pil_image = Image.open(in_file).convert("RGB")
 
-text_det = st.sidebar.button("Run Text Detection")
-text_rec = st.sidebar.button("Run OCR")
-layout_det = st.sidebar.button("Run Layout Analysis")
-order_det = st.sidebar.button("Run Reading Order")
+text_det = st.sidebar.button("Phát hiện văn bản")
+text_rec = st.sidebar.button("chạy OCR")
+layout_det = st.sidebar.button("Phân tích bố cục")
+order_det = st.sidebar.button("Thứ tự đọc")
 
 if pil_image is None:
     st.stop()
@@ -151,7 +151,7 @@ if pil_image is None:
 if text_det:
     det_img, pred = text_detection(pil_image)
     with col1:
-        st.image(det_img, caption="Detected Text", use_column_width=True)
+        st.image(det_img, caption="Văn bản được phát hiện", use_column_width=True)
         st.json(pred.model_dump(exclude=["heatmap", "affinity_map"]), expanded=True)
 
 
@@ -159,15 +159,15 @@ if text_det:
 if layout_det:
     layout_img, pred = layout_detection(pil_image)
     with col1:
-        st.image(layout_img, caption="Detected Layout", use_column_width=True)
+        st.image(layout_img, caption="Bố cục được phát hiện", use_column_width=True)
         st.json(pred.model_dump(exclude=["segmentation_map"]), expanded=True)
 
 # Run OCR
 if text_rec:
     rec_img, pred = ocr(pil_image, languages)
     with col1:
-        st.image(rec_img, caption="OCR Result", use_column_width=True)
-        json_tab, text_tab = st.tabs(["JSON", "Text Lines (for debugging)"])
+        st.image(rec_img, caption="Kết quả OCR", use_column_width=True)
+        json_tab, text_tab = st.tabs(["JSON", "Dòng văn bản (for debugging)"])
         with json_tab:
             st.json(pred.model_dump(), expanded=True)
         with text_tab:
@@ -176,8 +176,8 @@ if text_rec:
 if order_det:
     order_img, pred = order_detection(pil_image)
     with col1:
-        st.image(order_img, caption="Reading Order", use_column_width=True)
+        st.image(order_img, caption="Thứ tự đọc", use_column_width=True)
         st.json(pred.model_dump(), expanded=True)
 
 with col2:
-    st.image(pil_image, caption="Uploaded Image", use_column_width=True)
+    st.image(pil_image, caption="Hình ảnh đã tải lên", use_column_width=True)

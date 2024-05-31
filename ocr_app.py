@@ -121,7 +121,7 @@ layout_model, layout_processor = load_layout_cached()
 order_model, order_processor = load_order_cached()
 
 
-st.markdown("""# Surya OCR""")
+st.markdown("""# OCR *^_^* """)
 
 in_file = st.sidebar.file_uploader("PDF hoặc hình ảnh:", type=["pdf", "png", "jpg", "jpeg", "gif", "webp"])
 languages = st.sidebar.multiselect("Ngôn ngữ", sorted(list(CODE_TO_LANGUAGE.values())), default=["Vietnamese"], max_selections=4)
@@ -141,8 +141,8 @@ else:
 
 text_det = st.sidebar.button("Phát hiện văn bản")
 text_rec = st.sidebar.button("chạy OCR")
-layout_det = st.sidebar.button("Phân tích bố cục")
-order_det = st.sidebar.button("Thứ tự đọc")
+# layout_det = st.sidebar.button("Phân tích bố cục")
+# order_det = st.sidebar.button("Thứ tự đọc")
 
 if pil_image is None:
     st.stop()
@@ -156,28 +156,28 @@ if text_det:
 
 
 # Run layout
-if layout_det:
-    layout_img, pred = layout_detection(pil_image)
-    with col1:
-        st.image(layout_img, caption="Bố cục được phát hiện", use_column_width=True)
-        st.json(pred.model_dump(exclude=["segmentation_map"]), expanded=True)
+# if layout_det:
+#     layout_img, pred = layout_detection(pil_image)
+#     with col1:
+#         st.image(layout_img, caption="Bố cục được phát hiện", use_column_width=True)
+#         st.json(pred.model_dump(exclude=["segmentation_map"]), expanded=True)
 
 # Run OCR
 if text_rec:
     rec_img, pred = ocr(pil_image, languages)
     with col1:
         st.image(rec_img, caption="Kết quả OCR", use_column_width=True)
-        json_tab, text_tab = st.tabs(["JSON", "Dòng văn bản (for debugging)"])
+        json_tab, text_tab = st.tabs(["JSON", "Dòng văn bản"])
         with json_tab:
             st.json(pred.model_dump(), expanded=True)
         with text_tab:
             st.text("\n".join([p.text for p in pred.text_lines]))
 
-if order_det:
-    order_img, pred = order_detection(pil_image)
-    with col1:
-        st.image(order_img, caption="Thứ tự đọc", use_column_width=True)
-        st.json(pred.model_dump(), expanded=True)
+# if order_det:
+#     order_img, pred = order_detection(pil_image)
+#     with col1:
+#         st.image(order_img, caption="Thứ tự đọc", use_column_width=True)
+#         st.json(pred.model_dump(), expanded=True)
 
 with col2:
     st.image(pil_image, caption="Hình ảnh đã tải lên", use_column_width=True)

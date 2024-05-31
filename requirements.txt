@@ -11,8 +11,5 @@ transformers
 filetype
 opencv-python-headless
 huggingface_hub
-# Build
-cx-Freeze
-coda
-future
-pyinstaller
+python-docx
+python-time
